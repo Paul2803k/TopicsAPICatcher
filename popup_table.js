@@ -24,8 +24,8 @@ function addToTable(parsedData) {
         var timestamp = row.insertCell(5);
 
         // Add data to the new cells:
-        nr.innerHTML = JSON.stringify(0);
-        topics.innerHTML = JSON.stringify(data?.topics);
+        nr.innerHTML = JSON.stringify(table.rows.length - 2);
+        topics.innerHTML = JSON.stringify(data?.topics, null, 3);
         source.innerHTML = JSON.stringify(data?.script);
         website.innerHTML = JSON.stringify(data?.website);
         args.innerHTML = JSON.stringify(data?.args);
@@ -45,7 +45,7 @@ chrome.tabs.query(
         // Get the entries related to your website when opening the popup
         chrome.storage.local.get(JSON.stringify(tab)).then((result) => {
             let parsedData = JSON.parse(result[JSON.stringify(tab)]);
-            addToTable(parsedData);
+            addToTable(parsedData.slice(-10));
         });
 
         // add listener in case calls are made when the popup is open

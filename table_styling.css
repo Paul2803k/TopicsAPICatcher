@@ -88,8 +88,8 @@ video {
     font: inherit;
     vertical-align: baseline;
     outline: none;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-size-adjust: 100%;
+    /* -webkit-font-smoothing: antialiased; */
+    /* -webkit-text-size-adjust: 100%; */
     -ms-text-size-adjust: 100%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -104,13 +104,13 @@ body {
     font-size: 62.5%;
     line-height: 1;
     color: #585858;
-    padding: 22px 10px;
-    padding-bottom: 55px;
+    /* padding: 22px 10px; */
+    /* padding-bottom: 55px; */
 }
 
 ::selection {
-    background: #5f74a0;
-    color: #fff;
+    background: #3162c500;
+    color: #e91818;
 }
 ::-moz-selection {
     background: #5f74a0;
@@ -181,7 +181,7 @@ img {
 }
 
 h1 {
-    font-family: 'Amarante', Tahoma, sans-serif;
+    /* font-family: 'Amarante', Tahoma, sans-serif; */
     font-weight: bold;
     font-size: 3.6em;
     line-height: 1.7em;
@@ -196,13 +196,13 @@ h1 {
     background: #fff;
     margin: 0 auto;
     padding: 10px 17px;
-    -webkit-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.35);
+    /* -webkit-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.35); */
 }
 
 #keywords {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     font-size: 1.2em;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
 }
 
 #keywords thead {
