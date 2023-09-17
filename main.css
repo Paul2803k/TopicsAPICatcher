@@ -1,143 +1,142 @@
-.main {
-    width: 400;
-    height: 700;
-}
-
+/* Styles for the menu and content */
 body {
-    background: #ffffff;
-    height: 100vh;
-    width: 100vw;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* White background */
 }
 
-.toggler {
-    /* ALWAYS KEEPING THE TOGGLER OR THE CHECKBOX ON TOP OF EVERYTHING :  */
-    z-index: 2;
-    height: 50px;
-    width: 50px;
+#menu {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Start hidden off-screen */
+    width: auto;
+    height: 100%;
+    opacity: 0.8;
+    transition: left 0.3s ease-in;
+    z-index: 1;
+    padding-top: 60px;
+    margin: 0;
+    list-style: none;
+    background-color: #eceff1;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+#menu.open {
+    left: 0; /* Slide in when open */
+}
+
+#menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Styles for the menu items */
+#menu ul li:hover {
+    background-color: #cfd8dc;
+    cursor: pointer;
+}
+
+#menu ul li {
+    display: block;
+    padding: 12px 24px;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    transition-duration: 0.25s;
+}
+
+/* Styles for the content container */
+#content-container {
+    width: 200px; /* Default width */
+    height: 200px; /* Default height */
+    overflow: auto; /* Enable scrolling */
     position: absolute;
     top: 0;
-    left: 0;
-    cursor: pointer;
+    left: 250px;
+    background-color: #ffffff; /* White background */
+}
+
+/* Styles for the content iframe */
+#content-iframe {
+    width: 300px; /* 100% width within the container */
+    height: 500px; /* 100% height within the container */
+    border: none;
+}
+
+/* Hamburger icon styles */
+#menu__toggle {
     opacity: 0;
 }
 
-.hamburger {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 40px;
-    width: 40px;
-    padding: 0.6rem;
-
-    /* FOR DISPLAYING EVERY ELEMENT IN THE CENTER : */
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#menu__toggle:checked + .menu__btn > span {
+    transform: rotate(45deg);
 }
 
-/* CREATING THE MIDDLE LINE OF THE HAMBURGER : */
-
-.hamburger > div {
-    position: relative;
+#menu__toggle:checked + .menu__btn > span::before {
     top: 0;
-    left: 0;
-    background: rgb(0, 0, 0);
-    height: 2px;
-    width: 60%;
-    transition: all 0.4s ease;
+    transform: rotate(0deg);
 }
 
-/* CREATING THE TOP AND BOTTOM LINES : 
-TOP AT -10PX ABOVE THE MIDDLE ONE AND BOTTOM ONE IS 10PX BELOW THE MIDDLE: */
+#menu__toggle:checked + .menu__btn > span::after {
+    top: 0;
+    transform: rotate(90deg);
+}
 
-.hamburger > div::before,
-.hamburger > div::after {
-    content: '';
+#menu__toggle:checked ~ .menu__box {
+    left: 0 !important;
+}
+
+.menu__btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.menu__btn > span,
+.menu__btn > span::before,
+.menu__btn > span::after {
+    display: block;
     position: absolute;
-    top: -10px;
-    background: rgb(0, 0, 0);
     width: 100%;
     height: 2px;
-    transition: all 0.4s ease;
+    background-color: #616161;
+    transition-duration: 0.25s;
+}
+.menu__btn > span::before {
+    content: '';
+    top: -8px;
+}
+.menu__btn > span::after {
+    content: '';
+    top: 8px;
 }
 
-.hamburger > div::after {
-    top: 10px;
-}
-
-/* IF THE TOGGLER IS IN ITS CHECKED STATE, THEN SETTING THE BACKGROUND OF THE MIDDLE LAYER TO COMPLETE BLACK AND OPAQUE :  */
-
-.toggler:checked + .hamburger > div {
-    background: rgba(0, 0, 0, 0);
-}
-
-.toggler:checked + .hamburger > div::before {
-    top: 0;
-    transform: rotate(45deg);
-    background: black;
-}
-
-/* AND ROTATING THE TOP AND BOTTOM LINES :  */
-
-.toggler:checked + .hamburger > div::after {
-    top: 0;
-    transform: rotate(135deg);
-    background: black;
-}
-
-/* MAIN MENU WITH THE WHITE BACKGROUND AND THE TEXT :  */
-
-.menu {
-    background: rgb(62, 62, 62);
-    width: 0%;
-    height: 100vh;
-
-    /* APPLYING TRANSITION TO THE MENU :  */
-
-    transition: all 0.4s ease;
-}
-
-/* IF THE TOGGLER IS CHECKED, THEN INCREASE THE WIDTH OF THE MENU TO 30% , CREATING A SMOOTH EFFECT :  */
-
-.toggler:checked ~ .menu {
-    width: 30%;
-}
-
-/* STYLING THE LIST :  */
-
-.menu > div > ul {
+.menu__header {
     display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 70px;
-    padding-left: 10px;
-
-    /* HIDDEN INITIALLY  :  */
-
-    visibility: hidden;
+    flex-direction: row-reverse;
+    align-content: flex-start;
+    justify-content: space-evenly;
 }
 
-.menu > div > ul > li {
-    list-style: none;
-    padding: 0.5rem;
+.menu__header > #menu__toggle {
+    cursor: pointer;
+    font-size: 24px;
+    color: #000; /* Black color for the burger icon */
+    display: flex;
 }
 
-.menu > div > ul > li > a {
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    font-size: 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* WHEN THE TOGGLER IS CHECKED, CHANGE THE VISIBILITY TO VISIBLE :  */
-
-.toggler:checked ~ .menu > div > ul {
-    transition: visibility 0.4s ease;
-    transition-delay: 0.1s;
-    visibility: visible;
-}
-
-.toggler:checked ~ .menu > div > ul > li > a:hover {
-    color: orange;
+.menu__header > #title {
+    margin-top: 10px;
+    margin-left: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333; /* Text color for "Topics Calls" */
+    display: flex;
 }

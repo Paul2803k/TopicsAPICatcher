@@ -99,11 +99,11 @@ html {
     overflow-y: scroll;
 }
 body {
-    background: #eee url('https://i.imgur.com/eeQeRmk.png'); /* https://subtlepatterns.com/weave/ */
+    background: #a02424 url(https://i.imgur.com/eeQeRmk.png); /* https://subtlepatterns.com/weave/ */
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 62.5%;
     line-height: 1;
-    color: #585858;
+    color: #000000;
     /* padding: 22px 10px; */
     /* padding-bottom: 55px; */
 }
