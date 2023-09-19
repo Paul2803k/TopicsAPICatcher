@@ -1,0 +1,6 @@
+# globs
+.eslintcache
+.eslintignore
+.env
+.eslintrc
+.prittierrc

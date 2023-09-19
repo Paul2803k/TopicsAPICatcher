@@ -102,7 +102,7 @@ function addNewItems(parsedData) {
 }
 
 // Function to sort items based on the current sort order
-function sortItems(sortBy) {
+function sortItemsHtml(sortBy) {
     // Toggle the sort order
     toggleSortOrder();
 
@@ -158,11 +158,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     scriptHeader.addEventListener('click', () => {
-        sortItems('script');
+        sortItemsHtml('script');
     });
 
     timeHeader.addEventListener('click', () => {
-        sortItems('timestamp');
+        sortItemsHtml('timestamp');
     });
 
     chrome.tabs.query(

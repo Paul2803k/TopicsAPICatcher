@@ -119,8 +119,8 @@ function addNewItems(parsedData) {
     });
 }
 
-// Function to sort items based on the current sort order
-function sortItems(sortBy) {
+// Function to sort items based on the key
+function sortItemsHtml(sortBy) {
     // Toggle the sort order
     toggleSortOrder();
 
@@ -155,6 +155,28 @@ function sortItems(sortBy) {
     });
 }
 
+// Function to sort items based
+function sortItemsBy(data, key, dir) {
+    // Sort the items based on the selected field
+    data.sort((a, b) => {
+        if (key === 'script') {
+            let scriptA = a.script;
+            let scriptB = b.script;
+            return dir * scriptA.localeCompare(scriptB);
+        } else if (key === 'timestamp') {
+            let timeA = a.timestamp;
+            let timeB = b.timestamp;
+            return dir * (timeA - timeB);
+        } else if (key === 'website') {
+            let webA = a.ancestor ?? a.website;
+            let webB = b.ancestor ?? b.website;
+            return dir * webA?.localeCompare(webB);
+        }
+        return 0;
+    });
+    return data;
+}
+
 // Function to handle the click event for item headers
 function handleItemClick(index, details, arrows) {
     const itemHeader = document.querySelectorAll('.item-header')[index];
@@ -181,15 +203,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     scriptHeader.addEventListener('click', () => {
-        sortItems('script');
+        sortItemsHtml('script');
     });
 
     timeHeader.addEventListener('click', () => {
-        sortItems('timestamp');
+        sortItemsHtml('timestamp');
     });
 
     websitetHeader.addEventListener('click', () => {
-        sortItems('website');
+        sortItemsHtml('website');
     });
 
     // Get the entries related to your website when opening the popup
@@ -197,19 +219,19 @@ document.addEventListener('DOMContentLoaded', function () {
         //console.log(result);
         Object.keys(result).map((key) => {
             let value = result[key];
-            console.log(key, value);
+            // console.log(key, value);
             let parsedData = JSON.parse(value);
-            addNewItems(parsedData);
+            addNewItems(sortItemsBy(parsedData, 'timestamp', 1));
         });
     });
 
-    // Add a listener in case calls are made when the popup is open
-    chrome.storage.onChanged.addListener(function (changes, namespace) {
-        console.log(changes, namespace);
+    // // Add a listener in case calls are made when the popup is open
+    // chrome.storage.onChanged.addListener(function (changes, namespace) {
+    //     console.log(changes, namespace);
 
-        // if (tabKey in changes) {
-        //     let newValue = JSON.parse(changes[tabKey].newValue);
-        //     addNewItems([newValue[newValue.length - 1]]);
-        // }
-    });
+    //     // if (tabKey in changes) {
+    //     //     let newValue = JSON.parse(changes[tabKey].newValue);
+    //     //     addNewItems([newValue[newValue.length - 1]]);
+    //     // }
+    // });
 });
