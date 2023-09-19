@@ -1,7 +1,16 @@
 chrome.runtime.onConnect.addListener(function (port) {
     console.assert(port.name === 'inject_background');
     // console.log('waiting for data from the proxy');
-    port.onMessage.addListener(function (msg) {
+
+    // Add a function to handle disconnection
+    port.onDisconnect.addListener(function () {
+        // Remove the message listener when the port is disconnected
+        console.log('Proxy disconnected at: ', new Date(Date.now()).toLocaleString());
+        port.onMessage.removeListener(handleMessage);
+    });
+
+    // Define a function to handle incoming messages
+    function handleMessage(msg) {
         if (msg.data !== null) {
             // console.log('got data from proxy', msg);
             let data = JSON.parse(msg.data);
@@ -9,32 +18,31 @@ chrome.runtime.onConnect.addListener(function (port) {
 
             // get the entries related to your website
             chrome.storage.local.get(key).then((result) => {
-                // if we have a new entry we create an array with that first element
+                // if we have a new entry, create an array with that first element
+                let newArray;
                 if (JSON.stringify(result) === '{}') {
-                    let newArray = [];
-                    newArray.push(data);
-                    chrome.storage.local.set({[key]: JSON.stringify(newArray)}).then(() => {
-                        // console.log('New value is set', JSON.stringify(newArray, null, 4));
-                    });
+                    newArray = [data];
                 } else {
-                    // otherwise we append the new data to the existing one
+                    // otherwise, append the new data to the existing one
                     let entry = JSON.parse(result[key]);
-                    let copy = [];
-                    // legacy stuff, the og entry was just an object, REMOVE before proper reliese.
                     if (!Array.isArray(entry)) {
-                        copy.push(entry);
-                        copy.push(data);
-                    } else {
-                        copy = [...entry];
-                        copy.push(data);
+                        entry = [entry]; // Convert single entry to an array
                     }
-                    chrome.storage.local.set({[key]: JSON.stringify(copy)}).then(() => {
-                        // console.log('Value is set', JSON.stringify(copy, null, 4));
-                    });
+                    newArray = [...entry, data];
                 }
+
+                // Update the local storage with the new data
+                chrome.storage.local.set({[key]: JSON.stringify(newArray)}).then(() => {
+                    // Update the badge text and color
+                    chrome.action.setBadgeText({text: newArray.length > 10 ? '10+' : String(newArray.length)}); // Set badge text to the array length
+                    chrome.action.setBadgeBackgroundColor({color: 'red'});
+                });
             });
         } else {
             console.log('got no data from proxy');
         }
-    });
+    }
+
+    // Add the message listener
+    port.onMessage.addListener(handleMessage);
 });

@@ -1,6 +1,6 @@
 {
     "action": {
-        "default_popup": "popup_table.html",
+        "default_popup": "main.html",
         "default_title": "TopicsAPI"
     },
     "author": "Paolo Scattolin",
@@ -23,7 +23,7 @@
     "version": "1.0.0",
     "web_accessible_resources": [
         {
-            "resources": ["inject.js", "taxonomy.js", "table_styling.css"],
+            "resources": ["inject.js", "taxonomy.js"],
             "matches": ["<all_urls>"]
         }
     ]
