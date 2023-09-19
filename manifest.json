@@ -1,7 +1,12 @@
 {
     "action": {
         "default_popup": "main.html",
-        "default_title": "TopicsAPI"
+        "default_title": "TopicsAPI",
+        "default_icon": {
+            "16": "icons/api-base-16.png",
+            "48": "icons/api-base-32.png",
+            "128": "icons/api-base-64.png"
+        }
     },
     "author": "Paolo Scattolin",
     "content_scripts": [
