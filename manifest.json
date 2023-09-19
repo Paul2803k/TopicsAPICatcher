@@ -23,7 +23,7 @@
     "version": "1.0.0",
     "web_accessible_resources": [
         {
-            "resources": ["inject.js", "taxonomy.js", "table_styling.css", "popup_table.html"],
+            "resources": ["inject.js", "taxonomy.js"],
             "matches": ["<all_urls>"]
         }
     ]

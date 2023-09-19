@@ -1,4 +1,3 @@
-// script.js
 document.addEventListener('DOMContentLoaded', function () {
     const menu = document.getElementById('menu');
     const hamburger = document.getElementById('menu__toggle');
@@ -10,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function loadContent(option) {
+        if (typeof option !== 'string' || option.trim() === '') {
+            console.error('Invalid option:', option);
+            return;
+        }
         // Get the URL of the HTML file within the extension's directory
         const fileURL = chrome.runtime.getURL(option);
 

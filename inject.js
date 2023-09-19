@@ -51,6 +51,10 @@ const getTopics = function (response) {
     return topics;
 };
 
+const getArgs = function (args) {
+    return [...args];
+};
+
 (function () {
     const interceptFunctionCall = function (elementType, funcName) {
         // save the original function using a closure
@@ -80,7 +84,7 @@ const getTopics = function (response) {
                 console_log(`Intercepted call to ${calledFunc} ${callCnt} times`);
                 const source = getSourceFromStack();
                 const callDetails = {
-                    args: arguments,
+                    args: getArgs(arguments),
                     topics: getTopics(retVal),
                     script: source,
                     website: frameUrl,

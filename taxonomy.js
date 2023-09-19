@@ -1,3 +1,4 @@
+// version 1 of the taxonomy
 const taxonomy = {
     1: 'Arts & Entertainment',
     2: 'Arts & Entertainment/Acting & Theater',
@@ -99,7 +100,7 @@ const taxonomy = {
     98: 'Beauty & Fitness/Fitness/Bodybuilding',
     99: 'Beauty & Fitness/Hair Care',
     100: 'Books & Literature',
-    101: 'Books & Literature/Children\'s Literature',
+    101: "Books & Literature/Children's Literature",
     102: 'Books & Literature/Poetry',
     103: 'Business & Industrial',
     104: 'Business & Industrial/Advertising & Marketing',
@@ -289,14 +290,14 @@ const taxonomy = {
     288: 'Science/Robotics',
     289: 'Shopping',
     290: 'Shopping/Antiques & Collectibles',
-    291: 'Shopping/Children\'s Clothing',
+    291: "Shopping/Children's Clothing",
     292: 'Shopping/Consumer Resources',
     293: 'Shopping/Consumer Resources/Coupons & Discount Offers',
     294: 'Shopping/Costumes',
     295: 'Shopping/Flowers',
-    296: 'Shopping/Men\'s Clothing',
+    296: "Shopping/Men's Clothing",
     297: 'Shopping/Party & Holiday Supplies',
-    298: 'Shopping/Women\'s Clothing',
+    298: "Shopping/Women's Clothing",
     299: 'Sports',
     300: 'Sports/American Football',
     301: 'Sports/Australian Football',
@@ -347,7 +348,7 @@ const taxonomy = {
     346: 'Travel & Transportation/Tourist Destinations/Regional Parks & Gardens',
     347: 'Travel & Transportation/Tourist Destinations/Theme Parks',
     348: 'Travel & Transportation/Tourist Destinations/Zoos, Aquariums & Preserves',
-    349: 'Travel & Transportation/Travel Guides & Travelogues'
+    349: 'Travel & Transportation/Travel Guides & Travelogues',
 };
 
 export default taxonomy;
