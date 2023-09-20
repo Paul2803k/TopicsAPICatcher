@@ -6,8 +6,6 @@ let STACK_LINE_REGEXP = /(\()?(http[^)]+):[0-9]+:[0-9]+(\))?/;
 let accessCounts = {}; // keep the access and call counts for each property and function
 let ENABLE_CONSOLE_LOGS = true;
 
-// firefox doesn't support ancestorOrigins so we need to do
-// something else.
 const getAncestor = function () {
     var origins = location.ancestorOrigins;
     if (!origins) {

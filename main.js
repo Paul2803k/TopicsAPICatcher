@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     hamburger.addEventListener('click', () => {
         menu.classList.toggle('open');
-        hamburger.classList.toggle('active');
     });
 
     function loadContent(option) {
@@ -16,11 +15,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Get the URL of the HTML file within the extension's directory
         const fileURL = chrome.runtime.getURL(option);
 
-        // Load content into the iframe
-        iframe.src = fileURL;
+        // Hide the iframe with a fade-out effect
+        iframe.classList.add('hidden');
+
+        // After a short delay, change the iframe source and show it with a fade-in effect
+        setTimeout(() => {
+            iframe.src = fileURL;
+            iframe.classList.remove('hidden');
+        }, 300); // Adjust the delay
 
         menu.classList.remove('open'); // Close the menu after selecting an option
-        hamburger.classList.remove('active'); // Change back to the hamburger icon
 
         // Uncheck the hamburger checkbox
         hamburger.checked = false;
@@ -28,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Attach click event listeners to menu items
     const menuItems = document.querySelectorAll('#menu ul li');
+
     menuItems.forEach((item) => {
         item.addEventListener('click', () => {
             const option = item.getAttribute('data-option');

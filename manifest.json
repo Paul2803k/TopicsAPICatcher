@@ -22,13 +22,13 @@
         "type": "module"
     },
     "permissions": ["tabs", "storage"],
-    "description": "intercepts TopicsAPI requests",
+    "description": "intercepts TopicsAPI requests by injecting a script in the webpages.",
     "manifest_version": 3,
     "name": "TopicsAPI-Catcher",
     "version": "1.0.0",
     "web_accessible_resources": [
         {
-            "resources": ["inject.js", "taxonomy.js"],
+            "resources": ["inject.js", "taxonomy.js", "utils.js"],
             "matches": ["<all_urls>"]
         }
     ]

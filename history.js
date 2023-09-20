@@ -1,8 +1,4 @@
-// Function to format a timestamp
-function formatTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString(new Intl.Locale('nl-NL'));
-}
+import {formatTimestamp} from './utils.js';
 
 // Define a variable to track the current sort order
 let currentSortOrder = 'desc';
@@ -189,7 +185,6 @@ function handleItemClick(index, details, arrows) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // JavaScript to toggle the details section when an item is clicked
     const itemContainers = document.querySelectorAll('.item-container');
     const arrows = document.querySelectorAll('.arrow');
     const details = document.querySelectorAll('.details');
@@ -197,11 +192,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const websitetHeader = document.getElementById('website-header');
     const timeHeader = document.getElementById('time-header');
 
+    // Toggle the details section when an item is clicked
     itemContainers.forEach((container, index) => {
         // Handle click event for each item header
         handleItemClick(index, details, arrows);
     });
 
+    // Sorting buttons listeners
     scriptHeader.addEventListener('click', () => {
         sortItemsHtml('script');
     });
@@ -214,24 +211,22 @@ document.addEventListener('DOMContentLoaded', function () {
         sortItemsHtml('website');
     });
 
-    // Get the entries related to your website when opening the popup
+    // Get all the entries
     chrome.storage.local.get(null).then((result) => {
-        //console.log(result);
+        if (!result) {
+            console.info('Data not found in storage for this website:', JSON.stringify(result));
+            return;
+        }
+
         Object.keys(result).map((key) => {
-            let value = result[key];
-            // console.log(key, value);
-            let parsedData = JSON.parse(value);
-            addNewItems(sortItemsBy(parsedData, 'timestamp', 1));
+            try {
+                let value = result[key];
+                let parsedData = JSON.parse(value);
+                addNewItems(sortItemsBy(parsedData, 'timestamp', 1));
+            } catch (error) {
+                console.error('Error parsing history data:', error);
+                return;
+            }
         });
     });
-
-    // // Add a listener in case calls are made when the popup is open
-    // chrome.storage.onChanged.addListener(function (changes, namespace) {
-    //     console.log(changes, namespace);
-
-    //     // if (tabKey in changes) {
-    //     //     let newValue = JSON.parse(changes[tabKey].newValue);
-    //     //     addNewItems([newValue[newValue.length - 1]]);
-    //     // }
-    // });
 });

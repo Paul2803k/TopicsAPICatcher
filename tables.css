@@ -7,6 +7,7 @@ body {
     border-radius: 5px;
     padding: 10px;
     border: 1px solid #e5e5e5;
+    position: relative; /* Add this to make sure z-index works */
 }
 
 body::-webkit-scrollbar {
@@ -40,7 +41,7 @@ body::-webkit-scrollbar-corner {
     background-color: rgb(255, 255, 255);
 }
 
-/* Style for the single header row */
+/* Style for the header of the table */
 .header-row {
     display: flex;
     align-items: center;
@@ -49,6 +50,19 @@ body::-webkit-scrollbar-corner {
     border-radius: 5px;
     background-color: #f9f9f9;
     font-weight: bold;
+    position: sticky;
+    top: 0px;
+    z-index: 3; /* Add z-index to ensure it's above other content */
+}
+
+.fader {
+    position: sticky;
+    top: 0; /* Adjust this value to match the header height */
+    left: 0;
+    right: 0;
+    height: 50px; /* Adjust this value to control the height of the gradient fade-out effect */
+    background: linear-gradient(to top, rgba(255, 255, 255, 0) 1%, #f8f9fc 30%);
+    z-index: 2;
 }
 
 /* Style for individual header cells */
@@ -68,14 +82,16 @@ body::-webkit-scrollbar-corner {
 .item-list {
     list-style: none;
     padding-left: 0px;
+    margin-top: 0;
+    z-index: 1;
 }
 
 .item-container {
     border: 1px solid #e5e5e5;
     border-radius: 5px;
     margin-bottom: 10px;
-    background: white;
     transition: background-color 0.2s;
+    box-shadow: 0px 2px 5px 0px #777fb169;
 }
 
 .item-container:hover {
@@ -134,6 +150,7 @@ body::-webkit-scrollbar-corner {
 }
 
 .details-wrapper {
+    border-radius: inherit;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
@@ -149,16 +166,23 @@ body::-webkit-scrollbar-corner {
     margin-right: 5px; /* Adjust the spacing between the bullet point and the text */
 }
 
+.topics,
+.args {
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+
 .details {
     border-top: 1px solid #ccc;
     background-color: #f9f9f9;
     display: block;
     max-height: 200px;
     padding: 10px;
+    word-break: break-all;
 }
 
 /* Styles for the expanded details */
 .details.open {
     display: block;
-    max-height: 200px; /* Adjust this value based on your content */
+    max-height: 200px;
 }

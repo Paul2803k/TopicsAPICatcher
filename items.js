@@ -1,16 +1,4 @@
-// Function to format a timestamp
-function formatTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString(new Intl.Locale('nl-NL'));
-}
-
-// Define a variable to track the current sort order
-let currentSortOrder = 'desc';
-
-// Function to toggle the sort order
-function toggleSortOrder() {
-    currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
-}
+import {formatTimestamp} from './utils.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
@@ -144,19 +132,28 @@ function handleItemClick(index, details, arrows) {
     });
 }
 
+// Define a variable to track the current sort order
+let currentSortOrder = 'desc';
+
+// Function to toggle the sort order
+function toggleSortOrder() {
+    currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    // JavaScript to toggle the details section when an item is clicked
     const itemContainers = document.querySelectorAll('.item-container');
     const arrows = document.querySelectorAll('.arrow');
     const details = document.querySelectorAll('.details');
     const scriptHeader = document.getElementById('script-header');
     const timeHeader = document.getElementById('time-header');
 
+    // Toggle the details section when an item is clicked
     itemContainers.forEach((container, index) => {
         // Handle click event for each item header
         handleItemClick(index, details, arrows);
     });
 
+    // Sorting buttons listeners
     scriptHeader.addEventListener('click', () => {
         sortItemsHtml('script');
     });
@@ -165,6 +162,10 @@ document.addEventListener('DOMContentLoaded', function () {
         sortItemsHtml('timestamp');
     });
 
+    // Reset the notification when we open the popup.
+    chrome.action.setBadgeText({text: ''});
+
+    // Get the current active tab to figure out which key to use
     chrome.tabs.query(
         {
             active: true,
@@ -175,26 +176,41 @@ document.addEventListener('DOMContentLoaded', function () {
             if (tabs && tabs.length > 0) {
                 // Get the active tab
                 var tab = tabs[0].url;
+                var tabKey = JSON.stringify(tab);
 
                 // Get the entries related to your website when opening the popup
-                chrome.storage.local.get(JSON.stringify(tab)).then((result) => {
-                    let parsedData = JSON.parse(result[JSON.stringify(tab)]);
-                    addNewItems(parsedData.slice(-10));
-                    chrome.action.setBadgeText({text: ''});
+                chrome.storage.local.get(tabKey).then((result) => {
+                    if (!result || !result[tabKey]) {
+                        console.info('Data not found in storage for this website:', JSON.stringify(result));
+                        return;
+                    }
+
+                    try {
+                        let parsedResult = JSON.parse(result[tabKey]);
+                        // Only pass the last 10 results
+                        addNewItems(parsedResult.slice(-10));
+                    } catch (error) {
+                        console.error('Error parsing website storage data:', error);
+                    }
                 });
 
                 // Add a listener in case calls are made when the popup is open
                 chrome.storage.onChanged.addListener(function (changes) {
-                    let tabKey = JSON.stringify(tab);
                     if (tabKey in changes) {
-                        let newValue = JSON.parse(changes[tabKey].newValue);
-                        addNewItems([newValue[newValue.length - 1]]);
+                        try {
+                            const newValue = JSON.parse(changes[tabKey].newValue);
+                            addNewItems([newValue[newValue.length - 1]]);
+                        } catch (error) {
+                            console.error('Error parsing changed data:', error);
+                        }
                     }
                 });
             } else {
-                // Handle the case when there are no open tabs
-                // You can display a message or take appropriate action here
-                console.error('No open tabs found. CLose the dev inspector');
+                // Handle the case when there are no open tabs.
+                // BUG: it seems that when the dev inspector is open the
+                // tab loses focus and the calls fails. We'll see if there is
+                // a workaround for this.
+                console.error('No open tabs found. Close the dev inspector');
             }
         },
     );
