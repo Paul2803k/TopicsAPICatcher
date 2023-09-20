@@ -91,7 +91,7 @@ body::-webkit-scrollbar-corner {
     border-radius: 5px;
     margin-bottom: 10px;
     transition: background-color 0.2s;
-    box-shadow: 0px 2px 5px 0px #777fb169;
+    box-shadow: 0px 1px 2px 0px #777fb169;
 }
 
 .item-container:hover {

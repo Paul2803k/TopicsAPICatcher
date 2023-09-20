@@ -2,9 +2,7 @@ import {formatTimestamp} from './utils.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
-    // Find the item list
     const itemList = document.getElementById('item-list');
-
     const script = JSON.stringify(element?.script);
     const time = formatTimestamp(element?.timestamp);
 
@@ -13,8 +11,8 @@ function addNewItem(element) {
 
     // Create the "Script" cell as a link
     const scriptCell = document.createElement('a');
-    scriptCell.classList.add('script-cell');
     const scriptParse = script.replaceAll('"', '').split('/');
+    scriptCell.classList.add('script-cell');
     scriptCell.innerText = scriptParse[scriptParse.length - 1];
     scriptCell.href = script.replaceAll('"', ''); // Set the link URL
     scriptCell.title = 'Click to open in a new tab.';
@@ -26,8 +24,8 @@ function addNewItem(element) {
     });
 
     const itemWrapper = document.createElement('div');
-    itemWrapper.classList.add('item-wrapper');
     const timeCell = document.createElement('div');
+    itemWrapper.classList.add('item-wrapper');
     timeCell.classList.add('time-cell');
     timeCell.innerText = time;
 
@@ -51,8 +49,8 @@ function addNewItem(element) {
 
     // Create details
     const detailsWrapper = document.createElement('div');
-    detailsWrapper.classList.add('details-wrapper');
     const itemDetails = document.createElement('div');
+    detailsWrapper.classList.add('details-wrapper');
     itemDetails.classList.add('details');
     detailsWrapper.appendChild(itemDetails);
 
