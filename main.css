@@ -64,7 +64,6 @@ body {
     opacity: 0; /* When hidden, set opacity to 0 */
 }
 
-/* Hamburger icon styles */
 #menu__toggle {
     opacity: 0;
 }
