@@ -1,12 +1,4 @@
-import {formatTimestamp} from './utils.js';
-
-// Define a variable to track the current sort order
-let currentSortOrder = 'desc';
-
-// Function to toggle the sort order
-function toggleSortOrder() {
-    currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
-}
+import {formatTimestamp, handleItemClick, toggleSortOrder, sortItemsBy} from './utils.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
@@ -118,7 +110,7 @@ function addNewItems(parsedData) {
 // Function to sort items based on the key
 function sortItemsHtml(sortBy) {
     // Toggle the sort order
-    toggleSortOrder();
+    currentSortOrder = toggleSortOrder(currentSortOrder);
 
     let dir = currentSortOrder === 'asc' ? 1 : -1;
 
@@ -151,38 +143,8 @@ function sortItemsHtml(sortBy) {
     });
 }
 
-// Function to sort items based
-function sortItemsBy(data, key, dir) {
-    // Sort the items based on the selected field
-    data.sort((a, b) => {
-        if (key === 'script') {
-            let scriptA = a.script;
-            let scriptB = b.script;
-            return dir * scriptA.localeCompare(scriptB);
-        } else if (key === 'timestamp') {
-            let timeA = a.timestamp;
-            let timeB = b.timestamp;
-            return dir * (timeA - timeB);
-        } else if (key === 'website') {
-            let webA = a.ancestor ?? a.website;
-            let webB = b.ancestor ?? b.website;
-            return dir * webA?.localeCompare(webB);
-        }
-        return 0;
-    });
-    return data;
-}
-
-// Function to handle the click event for item headers
-function handleItemClick(index, details, arrows) {
-    const itemHeader = document.querySelectorAll('.item-header')[index];
-    itemHeader.addEventListener('click', () => {
-        // Toggle the details section for the clicked item
-        details[index].classList.toggle('open');
-        arrows[index].classList.toggle('rotate');
-        arrows[index].textContent = arrows[index].classList.contains('rotate') ? '▲' : '▼';
-    });
-}
+// Define a variable to track the current sort order
+let currentSortOrder = 'desc';
 
 document.addEventListener('DOMContentLoaded', function () {
     const itemContainers = document.querySelectorAll('.item-container');

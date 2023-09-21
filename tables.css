@@ -5,6 +5,7 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #f8f9fc;
     border-radius: 5px;
+    min-height: 375px;
     padding: 10px;
     border: 1px solid #e5e5e5;
     position: relative; /* Add this to make sure z-index works */

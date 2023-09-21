@@ -1,25 +1,37 @@
+let port = null;
+
 function connectToBackground() {
-    const port = chrome.runtime.connect({
-        name: 'inject_background',
-    });
+    if (port === null) {
+        port = chrome.runtime.connect({
+            name: 'inject_background',
+        });
 
-    port.onDisconnect.addListener(function () {
-        // Handle disconnection by creating a new port
-        console.log('Port disconnected. Creating a new port at ', new Date(Date.now()).toLocaleString());
-        connectToBackground(); // Recursive call to create a new port
-    });
+        port.onDisconnect.addListener(function () {
+            // Handle disconnection by logging and setting the port to null
+            console.info('Port disconnected at ', new Date(Date.now()).toLocaleString());
+            port = null;
 
-    // Listen for the event in the injected script and send it to the background script
-    window.addEventListener(
-        'PassToBackground',
-        function (evt) {
-            // console.log('proxying message from inject to background', evt.detail);
-            port.postMessage({
-                data: evt.detail,
-            });
-        },
-        false,
-    );
+            // TODO:
+            // The only reason why we would want to reconnect is that some website send the topics request
+            // periodically, not sure how often that happens.
+            // connectToBackground();
+        });
+
+        // Listen for the event in the injected script and send it to the background script
+        window.addEventListener(
+            'PassToBackground',
+            function (evt) {
+                if (port) {
+                    port.postMessage({
+                        data: evt.detail,
+                    });
+                } else {
+                    console.warn('No connection to background script.');
+                }
+            },
+            false,
+        );
+    }
 }
 
 // Initial connection

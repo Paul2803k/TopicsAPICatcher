@@ -1,4 +1,4 @@
-// Function to format a timestamp
+// Function to format timestamps
 export function formatTimestamp(timestamp) {
     const options = {
         hour: '2-digit', // Two-digit hour (e.g., 13)
@@ -12,4 +12,41 @@ export function formatTimestamp(timestamp) {
 
     const date = new Date(timestamp);
     return date.toLocaleString(new Intl.Locale('nl-NL'), options);
+}
+
+// Function to handle the click event for item headers
+export function handleItemClick(index, details, arrows) {
+    const itemHeader = document.querySelectorAll('.item-header')[index];
+    itemHeader.addEventListener('click', () => {
+        // Toggle the details section for the clicked item
+        details[index].classList.toggle('open');
+        arrows[index].classList.toggle('rotate');
+    });
+}
+
+// Function to toggle the sort order
+export function toggleSortOrder(currentSortOrder) {
+    return currentSortOrder === 'asc' ? 'desc' : 'asc';
+}
+
+// Function to sort items based on key and dir
+export function sortItemsBy(data, key, dir) {
+    // Sort the items based on the selected field
+    data.sort((a, b) => {
+        if (key === 'script') {
+            let scriptA = a.script;
+            let scriptB = b.script;
+            return dir * scriptA.localeCompare(scriptB);
+        } else if (key === 'timestamp') {
+            let timeA = a.timestamp;
+            let timeB = b.timestamp;
+            return dir * (timeA - timeB);
+        } else if (key === 'website') {
+            let webA = a.ancestor ?? a.website;
+            let webB = b.ancestor ?? b.website;
+            return dir * webA?.localeCompare(webB);
+        }
+        return 0;
+    });
+    return data;
 }

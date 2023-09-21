@@ -56,7 +56,7 @@ const getArgs = function (args) {
 (function () {
     const interceptFunctionCall = function (elementType, funcName) {
         // save the original function using a closure
-        console_log(`Intercepting ${elementType.name}.${funcName}`);
+        // console_log(`Intercepting ${elementType.name}.${funcName}`);
         const origFunc = elementType.prototype[funcName];
         // overwrite the object method with our own
         Object.defineProperty(elementType.prototype, funcName, {
@@ -79,7 +79,7 @@ const getArgs = function (args) {
                     return retVal;
                 }
                 // we still haven't reached the limit; we intercept the call
-                console_log(`Intercepted call to ${calledFunc} ${callCnt} times`);
+                // console_log(`Intercepted call to ${calledFunc} ${callCnt} times`);
                 const source = getSourceFromStack();
                 const callDetails = {
                     args: getArgs(arguments),
@@ -96,7 +96,7 @@ const getArgs = function (args) {
                 var event = new CustomEvent('PassToBackground', {
                     detail: JSON.stringify(callDetails),
                 });
-                // send event to proxy in the context script
+
                 window.dispatchEvent(event);
                 return retVal;
             },

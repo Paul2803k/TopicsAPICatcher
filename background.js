@@ -1,18 +1,15 @@
 chrome.runtime.onConnect.addListener(function (port) {
     console.assert(port.name === 'inject_background');
-    // console.log('waiting for data from the proxy');
-
     // Add a function to handle disconnection
     port.onDisconnect.addListener(function () {
         // Remove the message listener when the port is disconnected
-        console.log('Proxy disconnected at: ', new Date(Date.now()).toLocaleString());
+        console.info('Proxy disconnected at: ', new Date(Date.now()).toLocaleString());
         port.onMessage.removeListener(handleMessage);
     });
 
     // Define a function to handle incoming messages
     function handleMessage(msg) {
         if (msg.data !== null) {
-            // console.log('got data from proxy', msg);
             let data = JSON.parse(msg.data);
             let key = JSON.stringify(data.ancestor ?? data.website);
 
@@ -34,12 +31,12 @@ chrome.runtime.onConnect.addListener(function (port) {
                 // Update the local storage with the new data
                 chrome.storage.local.set({[key]: JSON.stringify(newArray)}).then(() => {
                     // Update the badge text and color
-                    chrome.action.setBadgeText({text: newArray.length > 10 ? '10+' : String(newArray.length)}); // Set badge text to the array length
+                    chrome.action.setBadgeText({text: newArray.length > 99 ? '99+' : String(newArray.length)}); // Set badge text to the array length
                     chrome.action.setBadgeBackgroundColor({color: 'red'});
                 });
             });
         } else {
-            console.log('got no data from proxy');
+            console.warn('No data from proxy');
         }
     }
 

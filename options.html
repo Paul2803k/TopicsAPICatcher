@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chrome Extension Options</title>
+        <link href="options.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="options-container">
+            <div class="option-section">
+                <p>Click the button below to remove entries associated with the current tab:</p>
+                <button id="removeCurrentTab" class="item-container">Remove Current Tab Entries</button>
+            </div>
+            <div class="option-section">
+                <p>Click the button below to clear all entries:</p>
+                <button id="clearAll" class="item-container">Clear All Entries</button>
+            </div>
+            <div id="feedbackMessage" class="feedback-message hidden"></div>
+        </div>
+        <script src="options.js"></script>
+    </body>
+</html>

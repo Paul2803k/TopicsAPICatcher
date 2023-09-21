@@ -1,4 +1,4 @@
-import {formatTimestamp} from './utils.js';
+import {formatTimestamp, toggleSortOrder, handleItemClick} from './utils.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
@@ -90,7 +90,7 @@ function addNewItems(parsedData) {
 // Function to sort items based on the current sort order
 function sortItemsHtml(sortBy) {
     // Toggle the sort order
-    toggleSortOrder();
+    currentSortOrder = toggleSortOrder(currentSortOrder);
 
     let dir = currentSortOrder === 'asc' ? 1 : -1;
 
@@ -119,24 +119,8 @@ function sortItemsHtml(sortBy) {
     });
 }
 
-// Function to handle the click event for item headers
-function handleItemClick(index, details, arrows) {
-    const itemHeader = document.querySelectorAll('.item-header')[index];
-    itemHeader.addEventListener('click', () => {
-        // Toggle the details section for the clicked item
-        details[index].classList.toggle('open');
-        arrows[index].classList.toggle('rotate');
-        arrows[index].textContent = arrows[index].classList.contains('rotate') ? '▲' : '▼';
-    });
-}
-
 // Define a variable to track the current sort order
 let currentSortOrder = 'desc';
-
-// Function to toggle the sort order
-function toggleSortOrder() {
-    currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
-}
 
 document.addEventListener('DOMContentLoaded', function () {
     const itemContainers = document.querySelectorAll('.item-container');
@@ -167,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
     chrome.tabs.query(
         {
             active: true,
-            lastFocusedWindow: true,
+            currentWindow: true,
         },
         function (tabs) {
             // Check if tabs is empty or undefined
@@ -205,9 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             } else {
                 // Handle the case when there are no open tabs.
-                // BUG: it seems that when the dev inspector is open the
-                // tab loses focus and the calls fails. We'll see if there is
-                // a workaround for this.
                 console.error('No open tabs found. Close the dev inspector');
             }
         },
