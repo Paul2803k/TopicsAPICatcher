@@ -30,9 +30,10 @@ function addNewItem(element) {
     timeCell.innerText = time;
 
     // Add event listener to toggle details
-    const arrow = document.createElement('div');
-    arrow.classList.add('arrow', 'arrow-toggle');
-    arrow.innerText = '⮞';
+    const arrow = document.createElement('i');
+    arrow.classList.add('material-icons', 'arrow', 'arrow-rotate');
+    arrow.innerText = 'navigate_next';
+    arrow.style.fontSize = '18px';
     arrow.title = 'Show/hide details.';
 
     arrow.addEventListener('click', () => {
