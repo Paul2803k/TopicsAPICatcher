@@ -1,3 +1,8 @@
+// This script handles the events coming from the injected script.
+// When an event is recieved, the script sends a message to the background script,
+// This is because the context and background script cannot interact directly and send
+// data to each other.
+
 let port = null;
 
 function connectToBackground() {
@@ -14,7 +19,7 @@ function connectToBackground() {
             // TODO:
             // The only reason why we would want to reconnect is that some website send the topics request
             // periodically, not sure how often that happens.
-            // connectToBackground();
+            connectToBackground();
         });
 
         // Listen for the event in the injected script and send it to the background script

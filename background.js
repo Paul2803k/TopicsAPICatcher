@@ -3,7 +3,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     // Add a function to handle disconnection
     port.onDisconnect.addListener(function () {
         // Remove the message listener when the port is disconnected
-        console.info('Proxy disconnected at: ', new Date(Date.now()).toLocaleString());
+        console.info('Proxy disconnected at: ', Date.now());
         port.onMessage.removeListener(handleMessage);
     });
 

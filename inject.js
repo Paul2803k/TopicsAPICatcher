@@ -1,11 +1,17 @@
-import taxonomy from './taxonomy.js';
+import {taxonomy_v2} from './taxonomy.js';
+// operational mode of the extention:
+// SILENT: just record the api calls.
+// BLOCK: record the api calls and return no topic to the caller.
+// SCRAMBLE: record the api calls and return random topic from the taxonomy.
 
+let MODE = 'SILENT';
 let frameUrl = document.location.href;
-let MAX_NUM_CALLS_TO_INTERCEPT = 10;
+let MAX_NUM_CALLS_TO_INTERCEPT = 1000;
 let STACK_LINE_REGEXP = /(\()?(http[^)]+):[0-9]+:[0-9]+(\))?/;
 let accessCounts = {}; // keep the access and call counts for each property and function
 let ENABLE_CONSOLE_LOGS = true;
 
+// TODO: for now only chrome, get rid of the firefox check.
 const getAncestor = function () {
     var origins = location.ancestorOrigins;
     if (!origins) {
@@ -28,35 +34,49 @@ const getAncestor = function () {
     }
 };
 
+// Debug log
 const console_log = function () {
     if (ENABLE_CONSOLE_LOGS) {
         console.log.apply(console, arguments);
     }
 };
 
+// We throw an error and parses the resulting stack.
+// this is to figure out where the topicApi call has been
+// made.
 const getSourceFromStack = function () {
     const stack = new Error().stack.split('\n');
     stack.shift(); // remove our own intercepting functions from the stack
     stack.shift();
-    const res = stack[1].match(STACK_LINE_REGEXP);
+    const res = stack[1]?.match(STACK_LINE_REGEXP);
     return res ? res[2] : 'UNKNOWN_SOURCE';
 };
 
+// We map the index to a readable topic.
 const getTopics = function (response) {
-    let topics = response.map(function (topic) {
-        return taxonomy[topic.topic];
+    return response.map(function (r) {
+        return taxonomy_v2[r.topic];
     });
-    return topics;
 };
 
+// Turns the arguments passed to the funtion into a readable state.
 const getArgs = function (args) {
-    return [...args];
+    let res = [];
+    Object.keys(args).map(function (r) {
+        res.push(JSON.stringify(args[r]));
+    });
+    return res;
 };
 
+// Retrieve "nTopics" random topics to pass to the caller.
+const getRandomTopics = function (nTopics) {
+    // TODO.
+};
+
+// Main intercept function.
 (function () {
     const interceptFunctionCall = function (elementType, funcName) {
         // save the original function using a closure
-        // console_log(`Intercepting ${elementType.name}.${funcName}`);
         const origFunc = elementType.prototype[funcName];
         // overwrite the object method with our own
         Object.defineProperty(elementType.prototype, funcName, {
@@ -78,9 +98,9 @@ const getArgs = function (args) {
                     });
                     return retVal;
                 }
-                // we still haven't reached the limit; we intercept the call
-                // console_log(`Intercepted call to ${calledFunc} ${callCnt} times`);
+
                 const source = getSourceFromStack();
+
                 const callDetails = {
                     args: getArgs(arguments),
                     topics: getTopics(retVal),
@@ -90,19 +110,25 @@ const getArgs = function (args) {
                     timestamp: Date.now(),
                 };
 
-                // console_log(`Call Details: ${JSON.stringify(callDetails, null, 2)}`);
-                // console.log('sending message to proxy: ', JSON.stringify(callDetails));
+                //console_log(callDetails);
 
                 var event = new CustomEvent('PassToBackground', {
                     detail: JSON.stringify(callDetails),
                 });
 
                 window.dispatchEvent(event);
-                return retVal;
+
+                switch (MODE) {
+                    case 'BLOCK':
+                        return []; // TODO: check return type.
+                    case 'SCRAMBLE':
+                        return getRandomTopics(3);
+                    default:
+                        return retVal;
+                }
             },
         });
     };
 
-    // Topics API calls
     interceptFunctionCall(Document, 'browsingTopics');
 })();
