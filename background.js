@@ -11,7 +11,8 @@ chrome.runtime.onConnect.addListener(function (port) {
     function handleMessage(msg) {
         if (msg.data !== null) {
             let data = JSON.parse(msg.data);
-            let key = JSON.stringify(data.ancestor ?? data.website);
+            let url = new URL(data.website ?? data.frame).hostname;
+            let key = JSON.stringify(url);
 
             // get the entries related to your website
             chrome.storage.local.get(key).then((result) => {

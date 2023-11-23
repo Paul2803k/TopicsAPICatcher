@@ -1,4 +1,4 @@
-import {formatTimestamp, toggleSortOrder, handleItemClick} from './utils.js';
+import {formatTimestamp, toggleSortOrder, handleItemClick, isValidUrl, getStorageKey} from './utils.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
@@ -14,8 +14,13 @@ function addNewItem(element) {
     const scriptParse = script.replaceAll('"', '').split('/');
     scriptCell.classList.add('script-cell');
     scriptCell.innerText = scriptParse[scriptParse.length - 1];
-    scriptCell.href = script.replaceAll('"', ''); // Set the link URL
-    scriptCell.title = 'Click to open in a new tab.';
+
+    // We create a link only if the script is actually a valid link
+    if (isValidUrl(script.replaceAll('"', ''))) {
+        scriptCell.classList.add('script-cell-link');
+        scriptCell.href = script.replaceAll('"', ''); // Set the link URL
+        scriptCell.title = 'Click to open in a new tab.';
+    }
 
     // Add event listener to prevent default action and open link in a new tab
     scriptCell.addEventListener('click', (e) => {
@@ -158,8 +163,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Check if tabs is empty or undefined
             if (tabs && tabs.length > 0) {
                 // Get the active tab
-                var tab = tabs[0].url;
-                var tabKey = JSON.stringify(tab);
+                let tab = tabs[0].url;
+                let tabKey = getStorageKey(tab);
 
                 // Get the entries related to your website when opening the popup
                 chrome.storage.local.get(tabKey).then((result) => {

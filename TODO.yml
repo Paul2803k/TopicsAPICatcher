@@ -1,0 +1,5 @@
+TODO:
+New feature:
+    - block mode: return empty or random topic?
+    - (optional) total number of Topics API accesses grouped by the script
+    - hostname

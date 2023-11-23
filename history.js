@@ -1,11 +1,11 @@
-import {formatTimestamp, handleItemClick, toggleSortOrder, sortItemsBy} from './utils.js';
+import {formatTimestamp, handleItemClick, toggleSortOrder, sortItemsBy, isValidUrl} from './utils.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
     // Find the item list
     const itemList = document.getElementById('item-list');
 
-    const website = element.ancestor ?? element.website;
+    const website = element.website ?? element.frame;
     const script = element.script;
     const time = formatTimestamp(element?.timestamp);
 
@@ -17,8 +17,13 @@ function addNewItem(element) {
     scriptCell.classList.add('script-cell');
     const scriptParse = script.replaceAll('"', '').split('/');
     scriptCell.innerText = scriptParse[scriptParse.length - 1];
-    scriptCell.href = script.replaceAll('"', ''); // Set the link URL
-    scriptCell.title = 'Click to open in a new tab.';
+
+    // We create a link only if the script is actually a valid link
+    if (isValidUrl(script.replaceAll('"', ''))) {
+        scriptCell.classList.add('script-cell-link');
+        scriptCell.href = script.replaceAll('"', ''); // Set the link URL
+        scriptCell.title = 'Click to open in a new tab.';
+    }
 
     // Create the "Website" cell as a link
     const websiteCell = document.createElement('a');
@@ -186,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 let value = result[key];
                 let parsedData = JSON.parse(value);
-                addNewItems(sortItemsBy(parsedData, 'timestamp', 1));
+                addNewItems(sortItemsBy(parsedData, 'timestamp', -1));
             } catch (error) {
                 console.error('Error parsing history data:', error);
                 return;

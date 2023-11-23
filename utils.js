@@ -1,3 +1,22 @@
+// Validates URLs.
+export function isValidUrl(string) {
+    try {
+        new URL(string.toString());
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
+// Creates a key for the storage based on the url
+export function getStorageKey(url) {
+    if (isValidUrl(url)) {
+        let key = new URL(url).hostname;
+        return JSON.stringify(key);
+    }
+    return '';
+}
+
 // Function to format timestamps
 export function formatTimestamp(timestamp) {
     const options = {
@@ -42,8 +61,8 @@ export function sortItemsBy(data, key, dir) {
             let timeB = b.timestamp;
             return dir * (timeA - timeB);
         } else if (key === 'website') {
-            let webA = a.ancestor ?? a.website;
-            let webB = b.ancestor ?? b.website;
+            let webA = a.website ?? a.frame;
+            let webB = b.website ?? b.frame;
             return dir * webA?.localeCompare(webB);
         }
         return 0;

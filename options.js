@@ -1,3 +1,5 @@
+import {getStorageKey} from './utils.js';
+
 document.addEventListener('DOMContentLoaded', function () {
     const removeCurrentTabButton = document.getElementById('removeCurrentTab');
     const clearAllButton = document.getElementById('clearAll');
@@ -11,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 const currentTab = tabs[0];
                 const tabUrl = currentTab.url;
-                const formattedUrl = JSON.stringify(tabUrl);
+                const formattedUrl = getStorageKey(tabUrl);
                 callback(formattedUrl);
             }
         });

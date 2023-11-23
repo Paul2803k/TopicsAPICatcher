@@ -13,7 +13,7 @@ let ENABLE_CONSOLE_LOGS = true;
 
 // TODO: for now only chrome, get rid of the firefox check.
 const getAncestor = function () {
-    var origins = location.ancestorOrigins;
+    let origins = location.ancestorOrigins;
     if (!origins) {
         origins = {length: 1};
         try {
@@ -47,6 +47,7 @@ const console_log = function () {
 const getSourceFromStack = function () {
     const stack = new Error().stack.split('\n');
     stack.shift(); // remove our own intercepting functions from the stack
+    //console_log('stack: ', stack);
     stack.shift();
     const res = stack[1]?.match(STACK_LINE_REGEXP);
     return res ? res[2] : 'UNKNOWN_SOURCE';
@@ -105,14 +106,14 @@ const getRandomTopics = function (nTopics) {
                     args: getArgs(arguments),
                     topics: getTopics(retVal),
                     script: source,
-                    website: frameUrl,
-                    ancestor: getAncestor(),
+                    frame: frameUrl,
+                    website: getAncestor(),
                     timestamp: Date.now(),
                 };
 
                 //console_log(callDetails);
 
-                var event = new CustomEvent('PassToBackground', {
+                let event = new CustomEvent('PassToBackground', {
                     detail: JSON.stringify(callDetails),
                 });
 
