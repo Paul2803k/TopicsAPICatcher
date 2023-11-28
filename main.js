@@ -21,14 +21,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     title.innerText = getTitle(iframe.src, 0);
 
-    if (iframe.src.includes('items')) {
-        // Get the current active tab to figure out which key to use
-        chrome.tabs.query(
-            {
-                active: true,
-                currentWindow: true,
-            },
-            function (tabs) {
+    // Get the current active tab to figure out which key to use
+    chrome.tabs.query(
+        {
+            active: true,
+            currentWindow: true,
+        },
+        function (tabs) {
+            // Reset the notification in the tab where we open the popup.
+            chrome.action.setBadgeText({text: '', tabId: tabs[0].id});
+            if (iframe.src.includes('items')) {
                 // Check if tabs is empty or undefined
                 if (tabs && tabs.length > 0) {
                     // Get the active tab
@@ -70,9 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Handle the case when there are no open tabs.
                     console.error('No open tabs found. Close the dev inspector');
                 }
-            },
-        );
-    }
+            }
+        },
+    );
 
     hamburger.addEventListener('click', () => {
         menu.classList.toggle('open');

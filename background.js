@@ -8,7 +8,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     });
 
     // Define a function to handle incoming messages
-    function handleMessage(msg) {
+    function handleMessage(msg, senderData) {
         if (msg.data !== null) {
             let data = JSON.parse(msg.data);
             let url = new URL(data.website ?? data.frame).hostname;
@@ -29,10 +29,13 @@ chrome.runtime.onConnect.addListener(function (port) {
                     newArray = [...entry, data];
                 }
 
-                // Update the local storage with the new data
                 chrome.storage.local.set({[key]: JSON.stringify(newArray)}).then(() => {
-                    // Update the badge text and color
-                    chrome.action.setBadgeText({text: newArray.length > 99 ? '99+' : String(newArray.length)}); // Set badge text to the array length
+                    // console.log(senderData?.sender);
+                    // Update the badge text and color depending on the sender.
+                    chrome.action.setBadgeText({
+                        text: newArray.length > 99 ? '99+' : String(newArray.length),
+                        tabId: senderData?.sender?.tab?.id,
+                    }); // Set badge text to the array length
                     chrome.action.setBadgeBackgroundColor({color: 'red'});
                 });
             });

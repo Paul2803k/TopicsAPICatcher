@@ -2,7 +2,7 @@ import {getStorageKey} from './utils.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const removeCurrentTabButton = document.getElementById('removeCurrentTab');
-    const clearAllButton = document.getElementById('clearAll');
+    const removeAllButton = document.getElementById('clearAll');
     const feedbackMessage = document.getElementById('feedbackMessage');
 
     // Function to get the current tab's URL
@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // After a short delay, change the iframe source and show it with a fade-in effect
         setTimeout(() => {
             feedbackMessage.classList.add('hidden');
-            //feedbackMessage.textContent = ''; // Clear the message
         }, 2000); // Adjust the delay
     }
 
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    clearAllButton.addEventListener('click', () => {
+    removeAllButton.addEventListener('click', () => {
         // Clear all data in chrome.storage.local
         chrome.storage.local.clear(function () {
             if (chrome.runtime.lastError) {
