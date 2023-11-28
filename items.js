@@ -150,9 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
         sortItemsHtml('timestamp');
     });
 
-    // Reset the notification when we open the popup.
-    chrome.action.setBadgeText({text: ''});
-
     // Get the current active tab to figure out which key to use
     chrome.tabs.query(
         {
