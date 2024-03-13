@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const removeCurrentTabButton = document.getElementById('removeCurrentTab');
     const removeAllButton = document.getElementById('clearAll');
     const feedbackMessage = document.getElementById('feedbackMessage');
+    const showStorageButton = document.getElementById('showStorage'); // Add this line
 
     // Function to get the current tab's URL
     function getCurrentTabUrl(callback) {
@@ -19,6 +20,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Function to retrieve and display Chrome storage content
+    function showStorageContent() {
+        chrome.storage.local.get(null, function (data) {
+            if (chrome.runtime.lastError) {
+                showMessage('Error: Unable to retrieve storage content.');
+            } else {
+                // Convert the retrieved data to a JSON string for easy reading
+                const jsonString = JSON.stringify(data, null, 2);
+                console.log(jsonString);
+                showMessage('Storage Content:\n' + jsonString);
+            }
+        });
+    }
+
     function showMessage(message) {
         feedbackMessage.textContent = message;
 
@@ -28,8 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // After a short delay, change the iframe source and show it with a fade-in effect
         setTimeout(() => {
             feedbackMessage.classList.add('hidden');
-        }, 2000); // Adjust the delay
+        }, 20000); // Adjust the delay (2000)
     }
+
+    showStorageButton.addEventListener('click', showStorageContent);
 
     removeCurrentTabButton.addEventListener('click', () => {
         // Get the current tab's URL

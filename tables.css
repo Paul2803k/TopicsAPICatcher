@@ -52,6 +52,7 @@ body::-webkit-scrollbar-corner {
     background-color: #f9f9f9;
     font-weight: bold;
     position: sticky;
+    /* margin: unset; */
     top: 0px;
     z-index: 3; /* Add z-index to ensure it's above other content */
 }
@@ -126,6 +127,16 @@ body::-webkit-scrollbar-corner {
     text-align: left; /* Align text to the left */
 }
 
+.line-link {
+    width: 40px;
+    word-wrap: break-word;
+    vertical-align: top;
+    cursor: pointer;
+    color: #0494da; /* Change the color to indicate a link */
+    text-decoration: underline; /* Add an underline to indicate a link */
+    text-align: left; /* Align text to the left */
+}
+
 .script-cell {
     flex: 1;
     padding: 10px; /* Adjust padding as needed */
@@ -144,26 +155,34 @@ body::-webkit-scrollbar-corner {
     text-align: left;
 }
 
+.topics-cell {
+    flex: 1;
+    width: 40%;
+    padding: 10px;
+    display: grid;
+    text-align: left;
+}
+
 .arrow {
     transition: transform 0.4s;
     margin-right: 10px;
-    font-size: 18px;
     cursor: pointer;
-    color: #d0d0d0;
+    fill: #c53535;
 }
 
 .arrow.rotate {
     transform: rotate(90deg);
-    color: #0494da;
+    fill: #da0404;
 }
 
 .arrow:hover {
-    color: #0494da;
+    fill: #0494da;
 }
 
 .details-wrapper {
-    border-radius: inherit;
     max-height: 0;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
 }
@@ -191,7 +210,6 @@ body::-webkit-scrollbar-corner {
     max-height: 200px;
     padding: 10px;
     word-break: break-all;
-    overflow-y: scroll;
 }
 
 .details::-webkit-scrollbar {

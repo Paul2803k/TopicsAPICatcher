@@ -1,9 +1,18 @@
-import {formatTimestamp, toggleSortOrder, handleItemClick, isValidUrl, getStorageKey} from './utils.js';
-
+import {
+    formatTimestamp,
+    toggleSortOrder,
+    handleItemClick,
+    isValidUrl,
+    getStorageKey,
+    formatLink,
+    getRootDomain,
+} from './utils.js';
+import {domainsMap} from './domains_map.js';
 // Function to add a new item to the list
 function addNewItem(element) {
     const itemList = document.getElementById('item-list');
-    const script = JSON.stringify(element?.script);
+    const topics = element?.topics;
+    const script = element?.script;
     const time = formatTimestamp(element?.timestamp);
 
     const row = document.createElement('li');
@@ -13,13 +22,18 @@ function addNewItem(element) {
     const scriptCell = document.createElement('a');
     const scriptParse = script.replaceAll('"', '').split('/');
     scriptCell.classList.add('script-cell');
-    scriptCell.innerText = scriptParse[scriptParse.length - 1];
+    scriptCell.innerText = domainsMap[getRootDomain(script)]?.entityName ?? scriptParse[scriptParse.length - 1];
+
+    // Create the "Topics" cell
+    const topicsCell = document.createElement('div');
+    topicsCell.classList.add('topics-cell');
+    topicsCell.innerText = topics.length === 0 ? 'None' : topics;
 
     // We create a link only if the script is actually a valid link
     if (isValidUrl(script.replaceAll('"', ''))) {
         scriptCell.classList.add('script-cell-link');
         scriptCell.href = script.replaceAll('"', ''); // Set the link URL
-        scriptCell.title = 'Click to open in a new tab.';
+        scriptCell.title = script;
     }
 
     // Add event listener to prevent default action and open link in a new tab
@@ -35,10 +49,11 @@ function addNewItem(element) {
     timeCell.innerText = time;
 
     // Add event listener to toggle details
-    const arrow = document.createElement('i');
+    const arrow = document.createElement('img');
     arrow.classList.add('material-icons', 'arrow', 'arrow-rotate');
-    arrow.innerText = 'navigate_next';
-    arrow.style.fontSize = '18px';
+    arrow.src = chrome.runtime.getURL('navigate_next_icon.svg'); // Use chrome.runtime.getURL to get the extension's path
+    arrow.style.width = '18px'; // Adjust the width and height as needed
+    arrow.style.height = '18px';
     arrow.title = 'Show/hide details.';
 
     arrow.addEventListener('click', () => {
@@ -47,6 +62,7 @@ function addNewItem(element) {
     });
 
     // Append cells and arrow to the wrapper
+    itemWrapper.appendChild(topicsCell);
     itemWrapper.appendChild(scriptCell);
     itemWrapper.appendChild(timeCell);
     itemWrapper.appendChild(arrow);
@@ -69,6 +85,20 @@ function addNewItem(element) {
         let keyElement = document.createElement('b'); // Make the key element bold
         keyElement.textContent = `${key.replace(/^./, key[0].toUpperCase())}: `;
         listItem.appendChild(keyElement);
+        if (isValidUrl(value)) {
+            // Create link line
+            const link = document.createElement('a');
+            link.classList.add('line-link');
+            link.innerText = formatLink(value);
+            link.href = value; // Set the link URL
+            link.title = 'Click to open in a new tab.';
+            listItem.appendChild(link); // Append the value (not bold)
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(e.target.href, '_blank');
+            });
+            return listItem;
+        }
         listItem.innerHTML += value; // Append the value (not bold)
         return listItem;
     });

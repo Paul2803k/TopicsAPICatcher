@@ -528,7 +528,8 @@ const getSourceFromStack = function () {
 // We map the index to a readable topic.
 const getTopics = function (response) {
     return response.map(function (r) {
-        return taxonomy_v2[r.topic];
+        let topic = taxonomy_v2[r.topic];
+        return topic?.substring(1, topic.length);
     });
 };
 
@@ -541,9 +542,19 @@ const getArgs = function (args) {
     return res;
 };
 
-// Retrieve "nTopics" random topics to pass to the caller.
-const getRandomTopics = function (nTopics) {
-    // TODO.
+const getRandomTopics = function (ogValue) {
+    // if no topics were returned, modify the original array in place
+    if (ogValue.length === 0) {
+        return ogValue;
+    }
+
+    const seed = Date.now(); // Use a dynamic or predefined seed
+    ogValue.forEach((ogTopicObj) => {
+        ogTopicObj.topic = 3; // Math.random() seems to cause some sort of memory leak
+        // need to check wtf is going on.
+    });
+
+    return ogValue;
 };
 
 // Main intercept function.
@@ -570,7 +581,6 @@ const getRandomTopics = function (nTopics) {
                             return origFunc.apply(this, arguments);
                         },
                     });
-                    return retVal;
                 }
 
                 const callDetails = {
@@ -592,9 +602,9 @@ const getRandomTopics = function (nTopics) {
 
                 switch (MODE) {
                     case 'BLOCK':
-                        return []; // TODO: check return type.
+                        return Promise.resolve([]);
                     case 'SCRAMBLE':
-                        return getRandomTopics(3);
+                        return Promise.resolve(getRandomTopics(retVal));
                     default:
                         return retVal;
                 }

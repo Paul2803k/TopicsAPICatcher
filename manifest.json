@@ -14,6 +14,7 @@
             "all_frames": true,
             "js": ["script_injector.js", "proxy.js"],
             "matches": ["<all_urls>"],
+            "type": "module",
             "run_at": "document_start"
         }
     ],
@@ -28,7 +29,7 @@
     "version": "1.0.0",
     "web_accessible_resources": [
         {
-            "resources": ["inject.js", "taxonomy.js", "utils.js"],
+            "resources": ["inject.js", "taxonomy.js", "utils.js, domain_map_small.json"],
             "matches": ["<all_urls>"]
         }
     ]

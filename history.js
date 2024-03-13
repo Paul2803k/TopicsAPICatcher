@@ -1,4 +1,13 @@
-import {formatTimestamp, handleItemClick, toggleSortOrder, sortItemsBy, isValidUrl} from './utils.js';
+import {
+    formatTimestamp,
+    handleItemClick,
+    toggleSortOrder,
+    sortItemsBy,
+    isValidUrl,
+    formatLink,
+    getRootDomain,
+} from './utils.js';
+import {domainsMap} from './domains_map.js';
 
 // Function to add a new item to the list
 function addNewItem(element) {
@@ -6,7 +15,7 @@ function addNewItem(element) {
     const itemList = document.getElementById('item-list');
 
     const website = element.website ?? element.frame;
-    const script = element.script;
+    const script = element?.script;
     const time = formatTimestamp(element?.timestamp);
 
     const row = document.createElement('li');
@@ -14,9 +23,9 @@ function addNewItem(element) {
 
     // Create the "Script" cell as a link
     const scriptCell = document.createElement('a');
-    scriptCell.classList.add('script-cell');
     const scriptParse = script.replaceAll('"', '').split('/');
-    scriptCell.innerText = scriptParse[scriptParse.length - 1];
+    scriptCell.classList.add('script-cell');
+    scriptCell.innerText = domainsMap[getRootDomain(script)]?.entityName ?? scriptParse[scriptParse.length - 1];
 
     // We create a link only if the script is actually a valid link
     if (isValidUrl(script.replaceAll('"', ''))) {
@@ -28,8 +37,7 @@ function addNewItem(element) {
     // Create the "Website" cell as a link
     const websiteCell = document.createElement('a');
     websiteCell.classList.add('website-cell');
-    // const websiteParse = website.replaceAll('"', '').split('/');
-    websiteCell.innerText = website;
+    websiteCell.innerText = formatLink(website);
     websiteCell.href = website; // Set the link URL
     websiteCell.title = 'Click to open in a new tab.';
 
@@ -43,10 +51,11 @@ function addNewItem(element) {
     timeCell.innerText = time;
 
     // Add event listener to toggle details
-    const arrow = document.createElement('i');
-    arrow.classList.add('material-icons', 'arrow', 'arrow-rotate');
-    arrow.innerText = 'navigate_next';
-    arrow.style.fontSize = '18px';
+    const arrow = document.createElement('img');
+    arrow.classList.add('arrow', 'arrow-rotate');
+    arrow.src = chrome.runtime.getURL('navigate_next_icon.svg'); // Use chrome.runtime.getURL to get the extension's path
+    arrow.style.width = '18px'; // Adjust the width and height as needed
+    arrow.style.height = '18px';
     arrow.title = 'Show/hide details.';
 
     // Add event listener to toggle details
@@ -90,6 +99,20 @@ function addNewItem(element) {
         let keyElement = document.createElement('b'); // Make the key element bold
         keyElement.textContent = `${key.replace(/^./, key[0].toUpperCase())}: `;
         listItem.appendChild(keyElement);
+        if (isValidUrl(value)) {
+            // Create link line
+            const link = document.createElement('a');
+            link.classList.add('line-link');
+            link.innerText = formatLink(value);
+            link.href = value; // Set the link URL
+            link.title = 'Click to open in a new tab.';
+            listItem.appendChild(link); // Append the value (not bold)
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(e.target.href, '_blank');
+            });
+            return listItem;
+        }
         listItem.innerHTML += value; // Append the value (not bold)
         return listItem;
     });

@@ -17,6 +17,11 @@ export function getStorageKey(url) {
     return '';
 }
 
+export function formatLink(link) {
+    if (link.length > 40) return link.substring(0, 40) + '...';
+    return link;
+}
+
 // Function to format timestamps
 export function formatTimestamp(timestamp) {
     const options = {
@@ -68,4 +73,20 @@ export function sortItemsBy(data, key, dir) {
         return 0;
     });
     return data;
+}
+
+// Function to get root domain out of a URL
+// credits https://github.com/capturr/get-root-domain/blob/main/src/index.ts
+export function getRootDomain(url) {
+    if (typeof url === 'string') url = new URL(url);
+
+    const domain = url.hostname;
+    const elems = domain.split('.');
+    const iMax = elems.length - 1;
+
+    const elem1 = elems[iMax - 1];
+    const elem2 = elems[iMax];
+
+    const isSecondLevelDomain = iMax >= 3 && (elem1 + elem2).length <= 5;
+    return (isSecondLevelDomain ? elems[iMax - 2] + '.' : '') + elem1 + '.' + elem2;
 }
