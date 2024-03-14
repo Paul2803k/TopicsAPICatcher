@@ -1,0 +1,36 @@
+{
+    "action": {
+        "default_popup": "main-content/main.html",
+        "default_title": "TopicsAPI",
+        "default_icon": {
+            "16": "icons/api-base-16.png",
+            "48": "icons/api-base-32.png",
+            "128": "icons/api-base-64.png"
+        }
+    },
+    "author": "Paolo Scattolin",
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": ["content-scripts/script_injector.js", "content-scripts/proxy.js"],
+            "matches": ["<all_urls>"],
+            "type": "module",
+            "run_at": "document_start"
+        }
+    ],
+    "background": {
+        "service_worker": "background/background.js",
+        "type": "module"
+    },
+    "permissions": ["tabs", "storage"],
+    "description": "intercepts TopicsAPI requests by injecting a script in the webpages.",
+    "manifest_version": 3,
+    "name": "TopicsAPI-Catcher",
+    "version": "1.0.0",
+    "web_accessible_resources": [
+        {
+            "resources": ["utils/inject.js", "utils/utils.js", "utils/domains_map.js"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}
