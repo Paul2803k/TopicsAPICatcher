@@ -4,3 +4,11 @@
 .env
 .eslintrc.js
 .prettierrc.js
+dist
+*.zip
+dist.crx
+dist.pem
+node_modules
+npm-debug.log
+debug.log
+.DS_Store

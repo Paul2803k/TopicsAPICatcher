@@ -1,0 +1,36 @@
+{
+    "name": "topicsapiextension",
+    "version": "1.0.0",
+    "description": "todo",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start:chrome": "webpack --mode=development --watch --env=chrome",
+        "build:chrome": "webpack --mode=production --optimize-minimize --env=chrome",
+        "zip-chrome-prod": "zip -r -j -FS chrome-prod.zip dist/*",
+        "zip-chrome-debug": "zip -r -j -FS chrome-debug.zip dist/*",
+        "release": "npm run start:chrome -- --watch=0 && npm run zip-chrome-debug && npm run build:chrome && npm run zip-chrome-prod"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Paul2803k/TopicsAPICatcher.git"
+    },
+    "author": "Paolo Scattolin",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Paul2803k/TopicsAPICatcher/issues"
+    },
+    "homepage": "https://github.com/Paul2803k/TopicsAPICatcher#readme",
+    "devDependencies": {
+        "copy-webpack-plugin": "^12.0.2",
+        "html-webpack-plugin": "^5.6.0",
+        "webpack": "^5.90.3",
+        "webpack-cli": "^5.1.4"
+    },
+    "dependencies": {
+        "@babel/preset-env": "^7.24.0",
+        "@babel/preset-react": "^7.23.3",
+        "babel-loader": "^9.1.3",
+        "lodash": "^4.17.21",
+        "lodash-webpack-plugin": "^0.11.6"
+    }
+}

@@ -1,0 +1,77 @@
+/* Styles for the menu and content */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+}
+
+/* Styles for the content iframe */
+.iframe-content {
+    display: flex;
+    width: 350px;
+    height: 400px;
+    padding: 10px;
+    overflow: auto;
+    background: white;
+    border: none;
+    opacity: 1; /* Initial opacity */
+    transition: opacity 0.3s ease-in-out; /* Add a transition effect */
+}
+
+.iframe-content.hidden {
+    opacity: 0; /* When hidden, set opacity to 0 */
+}
+
+.title {
+    opacity: 1; /* Initial opacity */
+    transition: opacity 0.3s ease-in-out; /* Add a transition effect */
+}
+
+.title.hidden {
+    opacity: 0; /* When hidden, set opacity to 0 */
+}
+
+.tablinks {
+    background: #f9f9f9;
+    border-top: none;
+    border-bottom: 3px solid #e5e5e5;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    padding: 10px 20px; /* Adjust padding as needed */
+    transition: background-color 0.3s ease; /* Add transition for smooth hover effect */
+    flex: 1; /* Make tabs evenly fill the space */
+    text-align: center; /* Center align text */
+    display: flex; /* Make container a flex container */
+    flex-direction: column; /* Align items in a column */
+    align-items: center; /* Center align items */
+}
+
+.tablinks:hover {
+    color: #0494da;
+}
+
+.tablinks.selected {
+    border-bottom-color: #65b2d8; /* Change border color for selected tab */
+    color: #0494da;
+}
+
+.tabs_container {
+    display: flex;
+    padding-right: 10px;
+    padding-left: 10px;
+    justify-content: space-evenly;
+}
+
+/* Style for SVG icons */
+.icon {
+    width: 24px; /* Adjust width and height as needed */
+    height: 24px;
+    margin-bottom: 3px;
+}
+
+/* Additional styles to adjust icon color */
+.tablinks .icon path {
+    fill: currentColor; /* Use current text color */
+}
