@@ -7,21 +7,28 @@
     </head>
     <body>
         <div class="options-container">
-            <select id="companies-select">
-                <!-- Options will be added dynamically -->
-            </select>
+            <details>
+                <summary>What is Topics API?</summary>
+                <p>
+                    The Topics API serves as a Privacy Sandbox feature crafted to safeguard privacy while enabling
+                    browsers to communicate user interest information with third parties. This facilitates
+                    interest-based advertising (IBA) without the need to track the specific websites visited by a user.
+                    IBA is a type of tailored advertising wherein an advertisement is chosen for a user according to
+                    their interests, deduced from the websites they have recently accessed. This differs from contextual
+                    advertising, which tries to match ads with the content on the page the user is currently viewing.
+                </p>
+            </details>
 
-            <ul id="filtered-entities-companies">
-                <!-- Filtered entities will be displayed here -->
-            </ul>
-
-            <select id="topics-select">
-                <!-- Options will be added dynamically -->
-            </select>
-
-            <ul id="filtered-entities-topics">
-                <!-- Filtered entities will be displayed here -->
-            </ul>
+            <details>
+                <summary>Topics API Catcher</summary>
+                <p>
+                    The Topics API Catcher extension was developed to provide transparency about which websites are
+                    using the Topics API. It injects scripts into web pages to intercept calls to the `browsingTopics`
+                    function, logging details about the calls such as arguments, return values, and the source of the
+                    call. Users can view this information, allowing them to understand how their browsing activity is
+                    being tracked and managed.
+                </p>
+            </details>
         </div>
         <script src="info.js" type="module"></script>
     </body>
