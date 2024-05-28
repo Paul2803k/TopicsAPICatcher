@@ -67,5 +67,32 @@ window.injectScript2 = function () {
     }
 };
 
+/**
+ * Executes a script in the page's JavaScript context.
+ */
+window.injectScript3 = function () {
+    // Encode script content into a data URI
+    let dataUri = 'data:text/javascript;base64,' + btoa(code);
+
+    // Function to inject the script into an element
+    function injectScriptIntoElement(element) {
+        // Create a new <script> element
+        let script = document.createElement('script');
+        script.type = 'module';
+        script.src = dataUri;
+        script.nonce = generateNonce(16);
+
+        // Append the script to the element
+        try {
+            element.appendChild(script);
+        } catch (error) {
+            console.warn('Failed to inject script into element: ', error);
+        }
+    }
+
+    // Iterate through all elements in the document and inject the script into each one
+    document.querySelectorAll('*').forEach(injectScriptIntoElement);
+};
+
 // Run
-window.injectScript2();
+window.injectScript3();

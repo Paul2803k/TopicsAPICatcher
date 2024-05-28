@@ -20,19 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Function to retrieve and display Chrome storage content
-    function showStorageContent() {
-        chrome.storage.local.get(null, function (data) {
-            if (chrome.runtime.lastError) {
-                showMessage('Error: Unable to retrieve storage content.');
-            } else {
-                // Convert the retrieved data to a JSON string for easy reading
-                const jsonString = JSON.stringify(data, null, 2);
-                console.log(jsonString);
-                showMessage('Storage Content:\n' + jsonString);
-            }
-        });
-    }
+    // // Function to retrieve and display Chrome storage content: DEBUG
+    // function showStorageContent() {
+    //     chrome.storage.local.get(null, function (data) {
+    //         if (chrome.runtime.lastError) {
+    //             showMessage('Error: Unable to retrieve storage content.');
+    //         } else {
+    //             // Convert the retrieved data to a JSON string for easy reading
+    //             const jsonString = JSON.stringify(data, null, 2);
+    //             console.log(jsonString);
+    //             showMessage('Storage Content:\n' + jsonString);
+    //         }
+    //     });
+    // }
 
     function showMessage(message) {
         feedbackMessage.textContent = message;
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 20000); // Adjust the delay (2000)
     }
 
-    showStorageButton.addEventListener('click', showStorageContent);
+    // showStorageButton.addEventListener('click', showStorageContent); DEBUG
 
     removeCurrentTabButton.addEventListener('click', () => {
         // Get the current tab's URL

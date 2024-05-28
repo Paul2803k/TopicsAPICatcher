@@ -1,4 +1,4 @@
-/* Styles for the menu and content */
+/* Styles for the body and content */
 body {
     margin: 0;
     overflow-y: scroll;
@@ -8,7 +8,7 @@ body {
     padding: 10px;
     height: 378px;
     border: 1px solid #e5e5e5;
-    position: relative; /* Add this to make sure z-index works */
+    position: relative;
 }
 
 body::-webkit-scrollbar {
@@ -42,34 +42,32 @@ body::-webkit-scrollbar-corner {
     background-color: rgb(255, 255, 255);
 }
 
-/* Styles for the content iframe */
-.feedback-message.hidden {
-    opacity: 0; /* Initial hidden opacity */
-}
-
-.feedback-message {
-    /* padding: 10px; */
-    border-radius: 5px;
-    display: flex;
-    padding: 10px;
-    background: white;
-    border: 1px solid #e5e5e5;
-    opacity: 1; /* Initial hidden opacity */
-    box-shadow: 0px 1px 2px 0px #777fb169;
-    transition: opacity 0.8s ease-in-out; /* Add a transition effect */
-}
-
+/* Styles for the options container */
 .options-container {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     align-content: center;
     justify-content: center;
     align-items: flex-start;
+    gap: 10px;
+    max-width: 100%;
 }
 
-.item-container:hover {
-    background-color: #ff6565;
-    border: 1px solid white;
-    color: white;
+details {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 2px 0px #777fb169;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+summary {
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent long text in the summary from overflowing */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
